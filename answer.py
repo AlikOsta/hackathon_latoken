@@ -1,8 +1,10 @@
 import json
 
+
 def load_culture_deck(filename):
     with open(filename, "r", encoding="utf-8") as file:
         return json.load(file)
+
 
 def search_in_culture_deck(deck, query):
     """
