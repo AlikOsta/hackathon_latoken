@@ -33,3 +33,5 @@ config.py
 *.log
 *.sqlite
 *.db
+pars_web/pars.py
+pars_web/parsed_data.json
