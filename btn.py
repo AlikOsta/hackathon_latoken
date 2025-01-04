@@ -25,9 +25,6 @@ async def btn1_handler(callback_query: CallbackQuery):
 @buttons_router.callback_query(lambda c: c.data == "btn_hackathon")
 async def btn2_handler(callback_query: CallbackQuery):
     
-    # photo_url ="https://i.ibb.co/dfvxsxp/image.png"
-    gif_url ="https://i.gifer.com/VAyR.gif" # загруска
-
-    await callback_query.message.answer_animation(gif_url, caption="Вы нажали на Кнопку 2!")
-    # await callback_query.message.answer_photo(photo_url, caption="Вы нажали на Кнопку 2!")
+    photo_url ="https://i.ibb.co/dfvxsxp/image.png"
+    await callback_query.message.answer_photo(photo_url, caption="Вы нажали на Кнопку 2!")
     await callback_query.answer()
