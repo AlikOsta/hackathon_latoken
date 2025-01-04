@@ -1,6 +1,7 @@
 import json
 import os
 
+
 def format_response(item, specific_content=None):
     """
     Форматирует ответ из базы знаний.
@@ -14,6 +15,7 @@ def format_response(item, specific_content=None):
         return f"**{item['text']}**\n\n{specific_content}"
     return f"**{item['text']}**\n\n" + "\n".join(item['content'])
 
+
 def load_data_json(filename="./pars_web/data.json"):
     """
     Загружает базу знаний из JSON файла.
@@ -26,6 +28,7 @@ def load_data_json(filename="./pars_web/data.json"):
     file_path = os.path.join(base_dir, filename)
     with open(file_path, "r", encoding="utf-8") as file:
         return json.load(file)
+
 
 def search_in_data_json(data, query):
     """

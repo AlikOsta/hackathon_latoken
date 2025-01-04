@@ -3,6 +3,7 @@ from config import API_KEY
 
 openai.api_key = API_KEY
 
+
 def truncate_context(context, max_length=6000):
     """
     Ограничивает длину контекста для GPT.
@@ -14,6 +15,7 @@ def truncate_context(context, max_length=6000):
     """
     words = context.split()
     return ' '.join(words[:max_length]) if len(words) > max_length else context
+
 
 async def get_openai_response(query, context):
     """

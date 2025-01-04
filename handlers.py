@@ -8,6 +8,7 @@ from gpt_bot import get_openai_response
 router = Router()
 data_json = load_data_json()
 
+
 def get_relevant_context(data, query):
     """
     Находит релевантный контекст для запроса пользователя.
@@ -20,17 +21,14 @@ def get_relevant_context(data, query):
     max_similarity = 0
     relevant_section = None
     
-    # Ищем наиболее подходящий раздел
     for item in data:
         if "text" in item and "content" in item:
-            # Простая проверка релевантности по словам запроса
             relevance = sum(1 for word in query.split() 
                           if word in item["text"].lower())
             if relevance > max_similarity:
                 max_similarity = relevance
                 relevant_section = item
-    
-    # Формируем контекст из найденного раздела
+
     if relevant_section:
         return f"**{relevant_section['text']}**\n" + "\n".join(relevant_section['content'])
     return "Основная информация о LATOKEN и блокчейн-технологиях"
@@ -44,7 +42,8 @@ async def start_command(message: types.Message):
     """
     photo_url = "https://i.ibb.co/GM8fYn2/1-nkw-Ov-Y7-FSKx-Gt1-ww-W0-DEA.png"
     keyboard = create_keyboard() 
-    await message.answer_photo(photo_url, caption="Привет! Я бот LATOKEN.", reply_markup=keyboard)
+    await message.answer_photo(photo_url, caption="Привет! Я бот LATOKEN. И я расскажу тебе о нашей компании и отвечу на все твои вопросы!", reply_markup=keyboard)
+
 
 @router.message()
 async def handle_message(message: types.Message):
