@@ -8,37 +8,33 @@ from gpt_bot import get_openai_response
 
 router = Router()
 
-culture_deck = load_culture_deck("answer.json")
-
-
-with open('answer.json', 'r', encoding='utf-8') as file:
-    content = file.read().replace('export const ANSWERS = ', '').strip(';')
-    ANSWERS = json.loads(content)
-
+culture_deck = load_culture_deck("./pars_web/data.json")
 
 @router.message(Command("start"))
 async def start_command(message: types.Message):
-    '''
-    Обработчик команды /start.
-    '''
-
-    photo_url ="https://i.ibb.co/GM8fYn2/1-nkw-Ov-Y7-FSKx-Gt1-ww-W0-DEA.png"
-
-    keyboard = create_keyboard() 
-
-    await message.answer_photo(photo_url, caption="Привет я текст заглушка!", reply_markup=keyboard)
-
+    """Обработчик команды /start."""
+    photo_url = "https://i.ibb.co/GM8fYn2/1-nkw-Ov-Y7-FSKx-Gt1-ww-W0-DEA.png"
+    await message.answer_photo(photo_url, caption="Привет! Я бот LATOKEN. Задайте мне любой вопрос.")
 
 
 @router.message()
 async def handle_message(message: types.Message):
+    """Обрабатывает пользовательские сообщения."""
     query = message.text.lower()
 
+    qa_database = load_qa_database()
+    
     deck_response = search_in_culture_deck(culture_deck, query)
     if deck_response:
         await message.answer(deck_response, parse_mode="Markdown")
         return
     
-    context = "\n\n".join([f"**{item['title']}**\n{item['content']}" for item in culture_deck])
-    gpt_response = await get_openai_response(query, context)
-    await message.answer(gpt_response)
+    loading_msg = await message.answer("🔄 Анализирую ваш вопрос...")
+    try:
+        gpt_response = await get_openai_response(query)
+        add_to_qa_database(qa_database, query, gpt_response)
+        await loading_msg.edit_text(gpt_response)
+    except Exception as e:
+        await loading_msg.edit_text("Произошла ошибка при обработке запроса.")
+        print(f"Ошибка: {e}")
+
